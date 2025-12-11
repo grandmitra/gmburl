@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Aplikasi Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: #555;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            color: #7c4dff;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .login-title {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .login-subtitle {
+            color: #777;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #7c4dff;
+            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(135deg, #6a40e0 0%, #5a35cc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
+        }
+        
+        .login-error {
+            color: #ff6b6b;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            color: #333;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #7c4dff;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #7c4dff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(124, 77, 255, 0.1);
+            color: #7c4dff;
+        }
+        
+        .nav-links a.active {
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(124, 77, 255, 0.3);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .left-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+        }
+        
+        .search-box {
+            padding: 0.8rem 1.2rem 0.8rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            width: 250px;
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #7c4dff;
+            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        
+        /* Category Filter */
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .category-btn {
+            padding: 0.6rem 1.2rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            border-color: #7c4dff;
+            color: #7c4dff;
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            color: white;
+            border-color: #7c4dff;
+        }
+        
+        /* CRUD Buttons */
+        .crud-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+        
+        .crud-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .btn-add:hover {
+            background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #2196F3 0%, #0b7dda 100%);
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #0b7dda 0%, #0969b8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);
+        }
+        
+        /* Items Per Page Selector */
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .items-per-page select {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #555;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .items-per-page select:focus {
+            outline: none;
+            border-color: #7c4dff;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        .header h2 {
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            color: #777;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Apps Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+        
+        .app-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .app-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(124, 77, 255, 0.15);
+            border-color: rgba(124, 77, 255, 0.2);
+        }
+        
+        .app-icon {
+            height: 80px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-icon i {
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            z-index: 1;
+        }
+        
+        .app-icon::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(106, 64, 224, 0.1) 100%);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+        
+        .app-content {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .app-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(124, 77, 255, 0.1);
+            color: #7c4dff;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+        }
+        
+        .app-link {
+            margin-top: auto;
+            padding-top: 1.2rem;
+        }
+        
+        .app-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .app-btn:hover {
+            background: linear-gradient(135deg, #6a40e0 0%, #5a35cc 100%);
+            box-shadow: 0 8px 20px rgba(124, 77, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 4rem;
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(124, 77, 255, 0.1);
+        }
+        
+        .category-title i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .category-title h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .pagination button {
+            padding: 0.8rem 1.4rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            color: #555;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 45px;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            border-color: #7c4dff;
+            color: #7c4dff;
+            transform: translateY(-2px);
+        }
+        
+        .pagination button.active {
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            color: white;
+            border-color: #7c4dff;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2.5rem;
+            background: white;
+            color: #666;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            color: #7c4dff;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .apps-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .control-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .left-controls, .right-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-box {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .category-filter {
+                justify-content: center;
+            }
+            
+            .crud-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .app-card {
+                border-radius: 12px;
+            }
+            
+            .app-content {
+                padding: 1.2rem;
+            }
+            
+            .app-title {
+                font-size: 1.2rem;
+            }
+            
+            .pagination button {
+                padding: 0.6rem 1rem;
+                min-width: 40px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+        
+        /* Modal CRUD */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #7c4dff;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #7c4dff;
+            box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn-cancel {
+            padding: 0.9rem 1.8rem;
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-submit {
+            padding: 0.9rem 1.8rem;
+            background: linear-gradient(135deg, #7c4dff 0%, #6a40e0 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #6a40e0 0%, #5a35cc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 77, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 class="login-title">Dashboard Aplikasi</h2>
+            <p class="login-subtitle">Masukkan password untuk mengakses aplikasi</p>
+            <input type="password" class="login-input" id="passwordInput" placeholder="Masukkan password">
+            <button class="login-btn" id="loginBtn">Masuk</button>
+            <div class="login-error" id="loginError">Password salah! Coba lagi.</div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard (Awalnya tersembunyi) -->
+    <div id="dashboard" style="display: none;">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-th-large"></i>
+                    <h1>Dashboard Aplikasi Premium</h1>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#semua" class="active">Semua Aplikasi</a></li>
+                    <li><a href="#operasional">Operasional</a></li>
+                    <li><a href="#proyek">Proyek</a></li>
+                    <li><a href="#manajemen">Manajemen</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="container">
+            <div class="header">
+                <h2>Kumpulan Aplikasi Perusahaan</h2>
+                <p>Akses semua aplikasi yang diperlukan untuk operasional harian, manajemen proyek, dan administrasi perusahaan</p>
+            </div>
+            
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="left-controls">
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-box" id="searchInput" placeholder="Cari aplikasi...">
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <div class="category-filter">
+                        <button class="category-btn active" data-category="semua">Semua</button>
+                        <button class="category-btn" data-category="operasional">Operasional</button>
+                        <button class="category-btn" data-category="proyek">Proyek</button>
+                        <button class="category-btn" data-category="manajemen">Manajemen</button>
+                    </div>
+                </div>
+                
+                <div class="right-controls">
+                    <!-- Items Per Page -->
+                    <div class="items-per-page">
+                        <span>Tampilkan:</span>
+                        <select id="itemsPerPage">
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="9" selected>9</option>
+                            <option value="12">12</option>
+                            <option value="all">Semua</option>
+                        </select>
+                    </div>
+                    
+                    <!-- CRUD Buttons -->
+                    <div class="crud-buttons">
+                        <button class="crud-btn btn-add" id="addBtn">
+                            <i class="fas fa-plus"></i> Tambah
+                        </button>
+                        <button class="crud-btn btn-edit" id="editBtn" disabled>
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="crud-btn btn-delete" id="deleteBtn" disabled>
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Apps Grid Container -->
+            <div id="appsContainer">
+                <!-- Aplikasi akan dimasukkan di sini oleh JavaScript -->
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination akan di-generate oleh JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2023 Dashboard Kumpulan Aplikasi Premium. Semua hak dilindungi.</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Total Aplikasi:</span>
+                    <span class="stat-value" id="totalApps">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Tampil:</span>
+                    <span class="stat-value" id="showingApps">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Halaman:</span>
+                    <span class="stat-value" id="currentPage">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah/Edit -->
+    <div class="modal" id="appModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Tambah Aplikasi Baru</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="appForm">
+                <div class="form-group">
+                    <label for="appTitle">Judul Aplikasi</label>
+                    <input type="text" id="appTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="appLink">Link Aplikasi</label>
+                    <input type="url" id="appLink" required>
+                </div>
+                <div class="form-group">
+                    <label for="appCategory">Kategori</label>
+                    <select id="appCategory" required>
+                        <option value="operasional">Operasional</option>
+                        <option value="proyek">Proyek</option>
+                        <option value="manajemen">Manajemen</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="appIcon">Ikon (FontAwesome)</label>
+                    <input type="text" id="appIcon" value="fas fa-link" required>
+                    <small>Contoh: fas fa-link, fas fa-chart-bar, fas fa-calculator</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelBtn">Batal</button>
+                    <button type="submit" class="btn-submit" id="submitBtn">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Password untuk mengakses dashboard
+        const CORRECT_PASSWORD = "gmb123";
+        
+        // Data aplikasi (disimpan di localStorage jika ada)
+        let appsData = {
+            operasional: [],
+            proyek: [],
+            manajemen: []
+        };
+        
+        // Data ikon default berdasarkan kata kunci
+        const iconKeywords = {
+            'barang': 'fas fa-gift',
+            'stok': 'fas fa-boxes',
+            'minuman': 'fas fa-wine-bottle',
+            'cycle': 'fas fa-sync-alt',
+            'gudang': 'fas fa-warehouse',
+            'toko': 'fas fa-store',
+            'harga': 'fas fa-dollar-sign',
+            'granit': 'fas fa-gem',
+            'arsip': 'fas fa-archive',
+            'digital': 'fas fa-digital-tachograph',
+            'absensi': 'fas fa-user-clock',
+            'qrcode': 'fas fa-qrcode',
+            'form': 'fas fa-file-alt',
+            'presensi': 'fas fa-users',
+            'event': 'fas fa-calendar-alt',
+            'invoice': 'fas fa-file-invoice',
+            'todo': 'fas fa-tasks',
+            'spin': 'fas fa-sync',
+            'rfq': 'fas fa-file-contract',
+            'kalk': 'fas fa-calculator',
+            'est': 'fas fa-calculator',
+            'cost': 'fas fa-calculator',
+            'kubikasi': 'fas fa-weight',
+            'tonase': 'fas fa-weight',
+            'kasir': 'fas fa-cash-register',
+            'logistik': 'fas fa-truck',
+            'marketplace': 'fas fa-shopping-cart',
+            'soq': 'fas fa-chart-pie',
+            'progress': 'fas fa-chart-line',
+            'project': 'fas fa-project-diagram',
+            'input': 'fas fa-keyboard',
+            'titik': 'fas fa-map-marker-alt',
+            'lokasi': 'fas fa-map-marker-alt',
+            'peta': 'fas fa-map',
+            'dashboard': 'fas fa-tachometer-alt',
+            'mcl': 'fas fa-building',
+            'business': 'fas fa-sitemap',
+            'process': 'fas fa-sitemap',
+            'sales': 'fas fa-chart-bar',
+            'report': 'fas fa-chart-bar',
+            'task': 'fas fa-tasks',
+            'compcheck': 'fas fa-check-circle',
+            'omset': 'fas fa-money-bill-wave',
+            'sertifikat': 'fas fa-certificate',
+            'code': 'fas fa-code',
+            'cafe': 'fas fa-coffee',
+            'voting': 'fas fa-vote-yea',
+            'konverter': 'fas fa-exchange-alt',
+            'master': 'fas fa-boxes',
+            'produk': 'fas fa-boxes',
+            'po': 'fas fa-clipboard-check',
+            'monitoring': 'fas fa-clipboard-check'
+        };
+        
+        // Variabel global untuk manajemen state
+        let currentCategory = 'semua';
+        let currentPage = 1;
+        let itemsPerPage = 9;
+        let selectedAppId = null;
+        let isEditMode = false;
+        
+        // Fungsi untuk mendapatkan ikon berdasarkan judul
+        function getIconByTitle(title) {
+            const lowerTitle = title.toLowerCase();
+            for (const [keyword, icon] of Object.entries(iconKeywords)) {
+                if (lowerTitle.includes(keyword)) {
+                    return icon;
+                }
+            }
+            return 'fas fa-link'; // Default icon
+        }
+        
+        // Data aplikasi awal
+        const initialAppsData = {
+            operasional: [
+                {id: 'op1', title: "Barang Hadiah CS", link: "https://script.google.com/macros/s/AKfycbykfOVDvs24CGzR22hhVysBuo9YH4rlaN8gxba0XtoSrIclnzetcd0UqtfC3l2edu0VWA/exec", icon: "fas fa-gift"},
+                {id: 'op2', title: "Stok Minuman", link: "https://script.google.com/macros/s/AKfycbxpdkjV6obIm9Zt_9IrtQ-Ow9U1BUz9bONPEnYI2oPQdH4t6UoRsEXPhdU4ZaUG41CJNw/exec", icon: "fas fa-wine-bottle"},
+                {id: 'op3', title: "Cycle Gudang", link: "https://script.google.com/macros/s/AKfycbzCDqB8kX6lQCTGC7V16DVYNQPQokwMIl3shfuHRmToaMT5YJq3MgWd7QUuU8KMRwOsJw/exec", icon: "fas fa-warehouse"},
+                {id: 'op4', title: "Cycle Toko", link: "https://script.google.com/macros/s/AKfycbxePmXcbHnkM4TanPmOyn0JaHX3A1_bFsDSSU_R5A4sQlc1dUKcjH56PaWcEAYv8FGDyg/exec", icon: "fas fa-store"},
+                {id: 'op5', title: "Hasil Cycle Gudang", link: "https://docs.google.com/spreadsheets/d/1vbuMVPb4u_QiH7PsjRWphElH06MDAjRRsiX53d1xI8w/edit?usp=sharing", icon: "fas fa-chart-bar"},
+                {id: 'op6', title: "Harga Granit", link: "https://script.google.com/macros/s/AKfycbysS6Ao_On057pW5Qm0okoiLd7HiyKliw4K1SwHLn-xGbOl_IsPkKnXKwQBaKvyaB6yhA/exec", icon: "fas fa-dollar-sign"},
+                {id: 'op7', title: "Arsip Digital", link: "https://script.google.com/macros/s/AKfycbz3DA3n1wfpnuTayd_BmBVqvhCkOdC_PEsMC6qz-Q5Sc_ngxSudU_wrc6dZZYmsy6c4/exec", icon: "fas fa-archive"},
+                {id: 'op8', title: "Absensi Online", link: "https://script.google.com/macros/s/AKfycbz-3mL9-cfzwQlQcO8hspfMWPHFQ7_A3E_Vu6JZxAvcnovYY5kSBHGB5drmZtcx2JTkfg/exec", icon: "fas fa-user-clock"},
+                {id: 'op9', title: "QRCode-Toko", link: "https://script.google.com/macros/s/AKfycbwTI6qZ1HVuxnwAeT0ggrmg9KMTADwyBd7NabKrPoh-MwbhSrpiaOROXIcsTwkKkPo/exec", icon: "fas fa-qrcode"},
+                {id: 'op10', title: "Form (SJ Kirlang)", link: "https://script.google.com/macros/s/AKfycbwmp-ONO4C0JLakgTQrh72QExu9QKiy8v4Zc2_j59ysqnqJQDB5WmjKRqedCJel8woN/exec", icon: "fas fa-file-alt"},
+                {id: 'op11', title: "Presensi", link: "https://script.google.com/macros/s/AKfycbyxDGr6rUr1BHaSSDBZXraYHXH0YmohqGEUo8v-_q1sFvBtwR9AYYrxBfHP7_JGn6alww/exec", icon: "fas fa-users"},
+                {id: 'op12', title: "Event", link: "https://script.google.com/macros/s/AKfycbxemTl9DJR7Q1ykMFOwu61gADZBXds2T6Kd5rCeOnRe4-umZqECUTaMkf3VX0wDb61mww/exec", icon: "fas fa-calendar-alt"},
+                {id: 'op13', title: "Invoice Manual", link: "https://script.google.com/macros/s/AKfycbw1AelyOGDYnIJnB-P_Fpw0fcM_mO2dsBAl_NIlLVso90w_JglSasO9IdIwcJADnvVeMA/exec", icon: "fas fa-file-invoice"},
+                {id: 'op14', title: "TO-DO List", link: "https://script.google.com/macros/s/AKfycby4UV2e1Z074bLWDv7r5YAX7znbuVYYPuL8Hc3Fvvs_3NB-R9PP_MXf8Qj-3NOTgWGuNg/exec", icon: "fas fa-tasks"},
+                {id: 'op15', title: "SPIN", link: "https://script.google.com/macros/s/AKfycbxIqMpNwglfAndmuYx1_NuMGrcVU3hO3P9ThtHfDlXpmriSwumOvc0hqAIBlrGRoL-PkA/exec", icon: "fas fa-sync-alt"},
+                {id: 'op16', title: "RFQ (Penawaran)", link: "https://script.google.com/macros/s/AKfycbxmNwqrD6Fpy19OjlNAUd34viyncpMM2rvgYs2d94zuR02aDNIT8iXtgEt0RLaaeSv9/exec", icon: "fas fa-file-contract"},
+                {id: 'op17', title: "Kalk. RFQ", link: "https://script.google.com/macros/s/AKfycbxGqhZY2XiN-VUN3lmn31S_fYhsN0jlZ2TCaznt31wagyXLoCDwIAzILCNeDlkK6xKJew/exec", icon: "fas fa-calculator"},
+                {id: 'op18', title: "Kalk. Est.Cost", link: "https://script.google.com/macros/s/AKfycbwixd0qQ6TrUMtxGCRnL7HUQCKxeIBdl6sfkDi9WN7d0p8ThZ2mjRKM7Lv9sAXv2eSp/exec", icon: "fas fa-calculator"},
+                {id: 'op19', title: "Kalk. Kubikasi Tonase", link: "https://script.google.com/macros/s/AKfycbyab8GaqhewGNBMOOLN_nq6X8nAUeSLPfyesDDCslezGASwNRjZTxiOX2d8eg7HtUUm/exec", icon: "fas fa-weight"},
+                {id: 'op20', title: "Kal.Kasir", link: "https://script.google.com/macros/s/AKfycbxTSaDg0i_82Ayr2AUrt3GbheEi-P3GUU7C9gmuUaDXjg-y7_S08EBvBfr9UxXzvF2oqA/exec", icon: "fas fa-cash-register"},
+                {id: 'op21', title: "Kal.Logistik", link: "https://script.google.com/macros/s/AKfycbzY8BwxTLwZKhe8nXtSWpVYccdvsag6TzkKCISTTI0pajNnyKmtz6Nut4mrZ198etQk7A/exec", icon: "fas fa-truck"},
+                {id: 'op22', title: "Kal.MarketPlace", link: "https://script.google.com/macros/s/AKfycbyAPSzzE5BEfW8Bo1qEBTzsZKwSU3HiqwnsMaHxNLC33h1s2kX8-1Hw1DIgVN_Nv40/exec", icon: "fas fa-shopping-cart"},
+                {id: 'op23', title: "SOQ Analysis", link: "https://script.google.com/macros/s/AKfycbwP6ZA5uANH5noN66SJOZv9ZBfMLc3Y14PCTrles6sj84_J9jFZobR3KII_yV27kwtU3A/exec", icon: "fas fa-chart-pie"}
+            ],
+            proyek: [
+                {id: 'pr1', title: "Progress Project 1", link: "https://script.google.com/macros/s/AKfycbwwH4aC-LFWGZcN7x7ujy_YawM77ahVHn8J3o9iWewKorIOEAqGpgK5aZswi_e0u8pn/exec", icon: "fas fa-chart-line"},
+                {id: 'pr2', title: "Progress Project 2", link: "https://script.google.com/macros/s/AKfycbzGwXjfSQQzRWkQAAWpvF7RJTtm1aklt7D-omCNQFuh5TC3izZxeUJ8z15TDaWa2D89/exec", icon: "fas fa-chart-line"},
+                {id: 'pr3', title: "Progress Project 3", link: "https://docs.google.com/spreadsheets/d/1ZvQtyvxRZ5bnGaXySjn9n6ZWT0y5HJ_2flTDVdJnxu8/edit?usp=sharing", icon: "fas fa-chart-line"},
+                {id: 'pr4', title: "Input Titik Lokasi", link: "https://script.google.com/macros/s/AKfycbzCuvSAhZ8hZPI74Le0hidxfOeSiUPxqqRrj_FaxDA7Cx3ZgvxAQkhOljIqz8VpUmQq/exec", icon: "fas fa-map-marker-alt"},
+                {id: 'pr5', title: "Peta Titik Lokasi", link: "https://lookerstudio.google.com/s/h66f3rU1Spk", icon: "fas fa-map"},
+                {id: 'pr6', title: "Arsip Digital", link: "https://script.google.com/macros/s/AKfycbz3DA3n1wfpnuTayd_BmBVqvhCkOdC_PEsMC6qz-Q5Sc_ngxSudU_wrc6dZZYmsy6c4/exec", icon: "fas fa-archive"},
+                {id: 'pr7', title: "Absensi Online", link: "https://script.google.com/macros/s/AKfycbz-3mL9-cfzwQlQcO8hspfMWPHFQ7_A3E_Vu6JZxAvcnovYY5kSBHGB5drmZtcx2JTkfg/exec", icon: "fas fa-user-clock"},
+                {id: 'pr8', title: "Form (SJ Kirlang)", link: "https://script.google.com/macros/s/AKfycbwmp-ONO4C0JLakgTQrh72QExu9QKiy8v4Zc2_j59ysqnqJQDB5WmjKRqedCJel8woN/exec", icon: "fas fa-file-alt"},
+                {id: 'pr9', title: "MarketPlace", link: "https://script.google.com/macros/s/AKfycbyG0KVmQddfy5aNGU_bVKCdLLKT-w8SKwwuyDMmk7IVlOdFcylgzbTQsTJTS94GFX3Z/exec", icon: "fas fa-store"},
+                {id: 'pr10', title: "Invoice Manual", link: "https://script.google.com/macros/s/AKfycbw1AelyOGDYnIJnB-P_Fpw0fcM_mO2dsBAl_NIlLVso90w_JglSasO9IdIwcJADnvVeMA/exec", icon: "fas fa-file-invoice"},
+                {id: 'pr11', title: "TO-DO List", link: "https://script.google.com/macros/s/AKfycby4UV2e1Z074bLWDv7r5YAX7znbuVYYPuL8Hc3Fvvs_3NB-R9PP_MXf8Qj-3NOTgWGuNg/exec", icon: "fas fa-tasks"},
+                {id: 'pr12', title: "SPIN", link: "https://script.google.com/macros/s/AKfycbxIqMpNwglfAndmuYx1_NuMGrcVU3hO3P9ThtHfDlXpmriSwumOvc0hqAIBlrGRoL-PkA/exec", icon: "fas fa-sync-alt"},
+                {id: 'pr13', title: "RFQ (Penawaran)", link: "https://script.google.com/macros/s/AKfycbxmNwqrD6Fpy19OjlNAUd34viyncpMM2rvgYs2d94zuR02aDNIT8iXtgEt0RLaaeSv9/exec", icon: "fas fa-file-contract"},
+                {id: 'pr14', title: "Kalk. RFQ", link: "https://script.google.com/macros/s/AKfycbxGqhZY2XiN-VUN3lmn31S_fYhsN0jlZ2TCaznt31wagyXLoCDwIAzILCNeDlkK6xKJew/exec", icon: "fas fa-calculator"},
+                {id: 'pr15', title: "Kalk. Est.Cost", link: "https://script.google.com/macros/s/AKfycbwixd0qQ6TrUMtxGCRnL7HUQCKxeIBdl6sfkDi9WN7d0p8ThZ2mjRKM7Lv9sAXv2eSp/exec", icon: "fas fa-calculator"},
+                {id: 'pr16', title: "Kalk. Kubikasi Tonase", link: "https://script.google.com/macros/s/AKfycbyab8GaqhewGNBMOOLN_nq6X8nAUeSLPfyesDDCslezGASwNRjZTxiOX2d8eg7HtUUm/exec", icon: "fas fa-weight"},
+                {id: 'pr17', title: "Kal.Kasir", link: "https://script.google.com/macros/s/AKfycbxTSaDg0i_82Ayr2AUrt3GbheEi-P3GUU7C9gmuUaDXjg-y7_S08EBvBfr9UxXzvF2oqA/exec", icon: "fas fa-cash-register"},
+                {id: 'pr18', title: "Kal.Logistik", link: "https://script.google.com/macros/s/AKfycbzY8BwxTLwZKhe8nXtSWpVYccdvsag6TzkKCISTTI0pajNnyKmtz6Nut4mrZ198etQk7A/exec", icon: "fas fa-truck"},
+                {id: 'pr19', title: "SOQ Analysis", link: "https://script.google.com/macros/s/AKfycbwP6ZA5uANH5noN66SJOZv9ZBfMLc3Y14PCTrles6sj84_J9jFZobR3KII_yV27kwtU3A/exec", icon: "fas fa-chart-pie"}
+            ],
+            manajemen: [
+                {id: 'mg1', title: "Dashboard", link: "https://script.google.com/macros/s/AKfycbwhPDGzQT-7HTeIxHCW8BPpdgcpzbbeHEAY-5pm0V1f6gcLt7Zahlgwsws2tgxq6vJZ/exec", icon: "fas fa-tachometer-alt"},
+                {id: 'mg2', title: "MCL", link: "https://script.google.com/macros/s/AKfycbwHA_ZkOUwL4WZ11D4ZX3nzgkl7MnOIiHd-DF5BNjUiPNpUUM9pW1G-UM5dwFwVadLc/exec", icon: "fas fa-building"},
+                {id: 'mg3', title: "SOQ", link: "https://gmbsoq.web.app/", icon: "fas fa-globe"},
+                {id: 'mg4', title: "Business Process", link: "https://script.google.com/macros/s/AKfycbyCJbqiSmpgEQEzdQB4819TJ2EejAsVAsPCx2dDmlJgfi5S-KRpGMeSM_uV0h_UeLo/exec", icon: "fas fa-sitemap"},
+                {id: 'mg5', title: "Sales Report", link: "https://lookerstudio.google.com/s/oazvgh2mNiM", icon: "fas fa-chart-bar"},
+                {id: 'mg6', title: "Task", link: "https://script.google.com/macros/s/AKfycbypNEY5F5oF9vS_HKGOKZvNJyynJCR_J9PD194ZUwomjQmLz-CIbX19AO7ie0T-zp5G/exec?u=admin&s=rtx4", icon: "fas fa-tasks"},
+                {id: 'mg7', title: "CompCheck1", link: "https://script.google.com/macros/s/AKfycbyl-dYOs2jvZF37saNnmJpDQx9OIHDVgcMqDHVbxgv5o4vNKiHP-T5zHSpln_o4Nptd/exec", icon: "fas fa-check-circle"},
+                {id: 'mg8', title: "Omset", link: "https://script.google.com/macros/s/AKfycbyhkyVGsuKfNLmDOlDofLh4Lrdwi0tCGpCHWRCBqwFh-0-Erlfj6UW-j0ISSGE8aGJz/exec", icon: "fas fa-money-bill-wave"},
+                {id: 'mg9', title: "Sertifikat", link: "https://script.google.com/macros/s/AKfycbxOtzpJxvj9-w-LrgdzH3Pyyuho5OyIFWlYed5BaMGS4UY6W2ybAfQ91k8RtZeUg5v7/exec", icon: "fas fa-certificate"},
+                {id: 'mg10', title: "Arsip Digital", link: "https://script.google.com/macros/s/AKfycbz3DA3n1wfpnuTayd_BmBVqvhCkOdC_PEsMC6qz-Q5Sc_ngxSudU_wrc6dZZYmsy6c4/exec", icon: "fas fa-archive"},
+                {id: 'mg11', title: "Absensi Online", link: "https://script.google.com/macros/s/AKfycbz-3mL9-cfzwQlQcO8hspfMWPHFQ7_A3E_Vu6JZxAvcnovYY5kSBHGB5drmZtcx2JTkfg/exec", icon: "fas fa-user-clock"},
+                {id: 'mg12', title: "Arsip code", link: "https://script.google.com/macros/s/AKfycbwrTaswdStf2IQOb1MYDcX7Uu0p2YXpZgJJoFsqcSUlJSHX98hKT60jx5BhSaS2FfQ0/exec", icon: "fas fa-code"},
+                {id: 'mg13', title: "Form (SJ Kirlang)", link: "https://script.google.com/macros/s/AKfycbwmp-ONO4C0JLakgTQrh72QExu9QKiy8v4Zc2_j59ysqnqJQDB5WmjKRqedCJel8woN/exec", icon: "fas fa-file-alt"},
+                {id: 'mg14', title: "Cafe", link: "https://script.google.com/macros/s/AKfycbyWkxGnmu1qkBMMPZ8wwFFCkVD2drt9VfPz6m2gaDwQ5JpSS8p5EBdRscBcr9AFVA3-Bw/exec", icon: "fas fa-coffee"},
+                {id: 'mg15', title: "Voting", link: "https://script.google.com/macros/s/AKfycbzI_UYxIHMXQJOVqeqWw_Rj2ha0QW08nlF8cPJTJezbawHDHzp-m2v9iQC1IZzqPb8/exec", icon: "fas fa-vote-yea"},
+                {id: 'mg16', title: "RFQ (Penawaran)", link: "https://script.google.com/macros/s/AKfycbxmNwqrD6Fpy19OjlNAUd34viyncpMM2rvgYs2d94zuR02aDNIT8iXtgEt0RLaaeSv9/exec", icon: "fas fa-file-contract"},
+                {id: 'mg17', title: "Kalk. RFQ", link: "https://script.google.com/macros/s/AKfycbxGqhZY2XiN-VUN3lmn31S_fYhsN0jlZ2TCaznt31wagyXLoCDwIAzILCNeDlkK6xKJew/exec", icon: "fas fa-calculator"},
+                {id: 'mg18', title: "Kalk. Est.Cost", link: "https://script.google.com/macros/s/AKfycbwixd0qQ6TrUMtxGCRnL7HUQCKxeIBdl6sfkDi9WN7d0p8ThZ2mjRKM7Lv9sAXv2eSp/exec", icon: "fas fa-calculator"},
+                {id: 'mg19', title: "Kalk. Kubikasi Tonase", link: "https://script.google.com/macros/s/AKfycbyab8GaqhewGNBMOOLN_nq6X8nAUeSLPfyesDDCslezGASwNRjZTxiOX2d8eg7HtUUm/exec", icon: "fas fa-weight"},
+                {id: 'mg20', title: "Kalk. Konsi+Toto", link: "https://script.google.com/macros/s/AKfycbyOggAFf_VwkWpgwtU0WR6LswWc22hbqiqBZq3FwcRUeBthOO4LfdFoTwgtVq5lc11r/exec", icon: "fas fa-calculator"},
+                {id: 'mg21', title: "Kal.Kasir", link: "https://script.google.com/macros/s/AKfycbxTSaDg0i_82Ayr2AUrt3GbheEi-P3GUU7C9gmuUaDXjg-y7_S08EBvBfr9UxXzvF2oqA/exec", icon: "fas fa-cash-register"},
+                {id: 'mg22', title: "Kal.Logistik", link: "https://script.google.com/macros/s/AKfycbzY8BwxTLwZKhe8nXtSWpVYccdvsag6TzkKCISTTI0pajNnyKmtz6Nut4mrZ198etQk7A/exec", icon: "fas fa-truck"},
+                {id: 'mg23', title: "Konverter", link: "https://script.google.com/macros/s/AKfycbwmVOvnnrqOQ0klYkkahuZhjKU45SYJB8MdOOf7hoSStt-ElbTH7aY27GfTde9wu0d9/exec", icon: "fas fa-exchange-alt"},
+                {id: 'mg24', title: "MasterProduk", link: "https://script.google.com/macros/s/AKfycbxFFoksFwp0rypN_jg5-R1UOZU1zkEr9uPdb5-JY61K6SYJI_H3MkJJACVbkb-hGQ4Bsw/exec", icon: "fas fa-boxes"},
+                {id: 'mg25', title: "SOQ Analysis", link: "https://script.google.com/macros/s/AKfycbwP6ZA5uANH5noN66SJOZv9ZBfMLc3Y14PCTrles6sj84_J9jFZobR3KII_yV27kwtU3A/exec", icon: "fas fa-chart-pie"},
+                {id: 'mg26', title: "PO Monitoring", link: "https://script.google.com/macros/s/AKfycbwRLAgobucen5WX_Q7yW8cgDQMbT8p0Ra61d-vMPX2Xs5G4v2TfhtRNVBkbLPJzilN9/exec", icon: "fas fa-clipboard-check"}
+            ]
+        };
+        
+        // Fungsi untuk membuat kartu aplikasi
+        function createAppCard(app) {
+            const categoryNames = {
+                operasional: 'Operasional',
+                proyek: 'Proyek',
+                manajemen: 'Manajemen'
+            };
+            
+            return `
+                <div class="app-card" data-id="${app.id}" data-category="${app.category}">
+                    <div class="app-icon">
+                        <i class="${app.icon}"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">${app.title}</div>
+                        <div class="app-category">${categoryNames[app.category] || app.category}</div>
+                        <div class="app-link">
+                            <a href="${app.link}" target="_blank" class="app-btn">Buka Aplikasi</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Fungsi untuk mendapatkan semua aplikasi berdasarkan kategori
+        function getAllApps() {
+            let allApps = [];
+            
+            if (currentCategory === 'semua') {
+                Object.values(appsData).forEach(categoryApps => {
+                    allApps = allApps.concat(categoryApps);
+                });
+            } else {
+                allApps = appsData[currentCategory] || [];
+            }
+            
+            return allApps;
+        }
+        
+        // Fungsi untuk mendapatkan aplikasi yang difilter berdasarkan pencarian
+        function getFilteredApps() {
+            let allApps = getAllApps();
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (searchQuery) {
+                allApps = allApps.filter(app => 
+                    app.title.toLowerCase().includes(searchQuery) || 
+                    app.category.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            return allApps;
+        }
+        
+        // Fungsi untuk menghitung total halaman
+        function getTotalPages(filteredApps) {
+            if (itemsPerPage === 'all') return 1;
+            return Math.ceil(filteredApps.length / itemsPerPage);
+        }
+        
+        // Fungsi untuk mendapatkan aplikasi untuk halaman saat ini
+        function getAppsForCurrentPage(filteredApps) {
+            if (itemsPerPage === 'all') return filteredApps;
+            
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            return filteredApps.slice(startIndex, endIndex);
+        }
+        
+        // Fungsi untuk merender aplikasi
+        function renderApps() {
+            const filteredApps = getFilteredApps();
+            const appsToShow = getAppsForCurrentPage(filteredApps);
+            const totalPages = getTotalPages(filteredApps);
+            
+            // Update informasi statistik
+            document.getElementById('totalApps').textContent = getAllApps().length;
+            document.getElementById('showingApps').textContent = filteredApps.length;
+            document.getElementById('currentPage').textContent = currentPage;
+            
+            // Render aplikasi
+            const appsContainer = document.getElementById('appsContainer');
+            
+            if (filteredApps.length === 0) {
+                appsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 4rem; background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.05);">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #ddd; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #888; margin-bottom: 0.5rem;">Tidak ada aplikasi ditemukan</h3>
+                        <p style="color: #aaa;">Coba ubah kata kunci pencarian atau pilih kategori lain</p>
+                    </div>
+                `;
+            } else {
+                let appsHTML = '';
+                appsToShow.forEach(app => {
+                    appsHTML += createAppCard(app);
+                });
+                appsContainer.innerHTML = appsHTML;
+            }
+            
+            // Render pagination
+            renderPagination(totalPages);
+            
+            // Setup event listeners untuk kartu aplikasi
+            setupAppCards();
+        }
+        
+        // Fungsi untuk merender pagination
+        function renderPagination(totalPages) {
+            const paginationContainer = document.getElementById('pagination');
+            
+            if (totalPages <= 1 || itemsPerPage === 'all') {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Tombol Previous
+            paginationHTML += `
+                <button id="prevBtn" ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            // Halaman pertama
+            if (currentPage > 2) {
+                paginationHTML += `<button class="page-btn" data-page="1">1</button>`;
+                if (currentPage > 3) {
+                    paginationHTML += `<button disabled>...</button>`;
+                }
+            }
+            
+            // Halaman saat ini dan sekitar
+            for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+                paginationHTML += `
+                    <button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            // Halaman terakhir
+            if (currentPage < totalPages - 1) {
+                if (currentPage < totalPages - 2) {
+                    paginationHTML += `<button disabled>...</button>`;
+                }
+                paginationHTML += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
+            }
+            
+            // Tombol Next
+            paginationHTML += `
+                <button id="nextBtn" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            paginationContainer.innerHTML = paginationHTML;
+            
+            // Setup event listeners untuk pagination
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderApps();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderApps();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentPage = parseInt(btn.dataset.page);
+                    renderApps();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+        
+        // Fungsi untuk setup event listeners pada kartu aplikasi
+        function setupAppCards() {
+            const appCards = document.querySelectorAll('.app-card');
+            const editBtn = document.getElementById('editBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+            
+            appCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Jangan aktifkan jika klik pada link
+                    if (e.target.tagName === 'A' || e.target.parentElement.tagName === 'A') {
+                        return;
+                    }
+                    
+                    // Hapus seleksi dari semua kartu
+                    appCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Tambah seleksi ke kartu yang diklik
+                    this.classList.add('selected');
+                    
+                    // Set selected app ID
+                    selectedAppId = this.dataset.id;
+                    
+                    // Aktifkan tombol edit dan delete
+                    editBtn.disabled = false;
+                    deleteBtn.disabled = false;
+                });
+            });
+            
+            // Reset seleksi jika klik di luar kartu
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.app-card') && !e.target.closest('.crud-btn')) {
+                    appCards.forEach(c => c.classList.remove('selected'));
+                    selectedAppId = null;
+                    editBtn.disabled = true;
+                    deleteBtn.disabled = true;
+                }
+            });
+        }
+        
+        // Fungsi untuk membuka modal
+        function openModal(editMode = false, appData = null) {
+            const modal = document.getElementById('appModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const form = document.getElementById('appForm');
+            
+            isEditMode = editMode;
+            
+            if (editMode && appData) {
+                modalTitle.textContent = 'Edit Aplikasi';
+                document.getElementById('appTitle').value = appData.title;
+                document.getElementById('appLink').value = appData.link;
+                document.getElementById('appCategory').value = appData.category;
+                document.getElementById('appIcon').value = appData.icon;
+            } else {
+                modalTitle.textContent = 'Tambah Aplikasi Baru';
+                form.reset();
+                document.getElementById('appIcon').value = 'fas fa-link';
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            const modal = document.getElementById('appModal');
+            modal.style.display = 'none';
+            isEditMode = false;
+            selectedAppId = null;
+        }
+        
+        // Fungsi untuk menemukan aplikasi berdasarkan ID
+        function findAppById(id) {
+            for (const category in appsData) {
+                const app = appsData[category].find(app => app.id === id);
+                if (app) {
+                    app.category = category;
+                    return app;
+                }
+            }
+            return null;
+        }
+        
+        // Fungsi untuk menghapus aplikasi
+        function deleteApp(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus aplikasi ini?')) {
+                return;
+            }
+            
+            for (const category in appsData) {
+                const index = appsData[category].findIndex(app => app.id === id);
+                if (index !== -1) {
+                    appsData[category].splice(index, 1);
+                    break;
+                }
+            }
+            
+            saveData();
+            renderApps();
+            
+            // Reset seleksi
+            document.getElementById('editBtn').disabled = true;
+            document.getElementById('deleteBtn').disabled = true;
+            selectedAppId = null;
+            
+            alert('Aplikasi berhasil dihapus!');
+        }
+        
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveData() {
+            localStorage.setItem('appsData', JSON.stringify(appsData));
+        }
+        
+        // Fungsi untuk memuat data dari localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('appsData');
+            if (savedData) {
+                appsData = JSON.parse(savedData);
+            } else {
+                // Jika tidak ada data di localStorage, gunakan data awal
+                appsData = JSON.parse(JSON.stringify(initialAppsData));
+            }
+        }
+        
+        // Fungsi untuk generate ID unik
+        function generateId() {
+            return 'app_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup login
+            const loginModal = document.getElementById('loginModal');
+            const dashboard = document.getElementById('dashboard');
+            const loginBtn = document.getElementById('loginBtn');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginError = document.getElementById('loginError');
+            
+            // Cek jika sudah login
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                loginModal.style.display = 'none';
+                dashboard.style.display = 'block';
+                initializeDashboard();
+            }
+            
+            loginBtn.addEventListener('click', function() {
+                const password = passwordInput.value;
+                
+                if (password === CORRECT_PASSWORD) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    loginModal.style.display = 'none';
+                    dashboard.style.display = 'block';
+                    initializeDashboard();
+                } else {
+                    loginError.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    
+                    // Sembunyikan error setelah 3 detik
+                    setTimeout(() => {
+                        loginError.style.display = 'none';
+                    }, 3000);
+                }
+            });
+            
+            // Enter untuk login
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+        });
+        
+        // Fungsi untuk menginisialisasi dashboard
+        function initializeDashboard() {
+            // Load data
+            loadData();
+            
+            // Setup menu toggle untuk mobile
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Setup filter kategori
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Hapus kelas active dari semua tombol
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Tambahkan kelas active ke tombol yang diklik
+                    this.classList.add('active');
+                    
+                    // Update kategori saat ini
+                    currentCategory = this.dataset.category;
+                    currentPage = 1;
+                    
+                    // Render aplikasi
+                    renderApps();
+                });
+            });
+            
+            // Setup pencarian
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                renderApps();
+            });
+            
+            // Setup items per page
+            const itemsPerPageSelect = document.getElementById('itemsPerPage');
+            itemsPerPageSelect.addEventListener('change', function() {
+                itemsPerPage = this.value === 'all' ? 'all' : parseInt(this.value);
+                currentPage = 1;
+                renderApps();
+            });
+            
+            // Setup navigation smooth scroll
+            const navLinksAnchors = document.querySelectorAll('.nav-links a');
+            navLinksAnchors.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Update active nav link
+                    navLinksAnchors.forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update kategori
+                    currentCategory = this.getAttribute('href').substring(1);
+                    currentPage = 1;
+                    
+                    // Update filter button
+                    categoryBtns.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector(`[data-category="${currentCategory}"]`).classList.add('active');
+                    
+                    // Tutup menu mobile jika terbuka
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                    }
+                    
+                    // Render aplikasi
+                    renderApps();
+                    
+                    // Scroll ke atas
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+            
+            // Setup CRUD buttons
+            document.getElementById('addBtn').addEventListener('click', () => {
+                openModal(false);
+            });
+            
+            document.getElementById('editBtn').addEventListener('click', () => {
+                if (selectedAppId) {
+                    const app = findAppById(selectedAppId);
+                    if (app) {
+                        openModal(true, app);
+                    }
+                }
+            });
+            
+            document.getElementById('deleteBtn').addEventListener('click', () => {
+                if (selectedAppId) {
+                    deleteApp(selectedAppId);
+                }
+            });
+            
+            // Setup modal
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            
+            // Handle form submission
+            document.getElementById('appForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('appTitle').value.trim();
+                const link = document.getElementById('appLink').value.trim();
+                const category = document.getElementById('appCategory').value;
+                let icon = document.getElementById('appIcon').value.trim();
+                
+                // Jika ikon tidak valid, gunakan ikon berdasarkan judul
+                if (!icon.startsWith('fas fa-') && !icon.startsWith('fab fa-')) {
+                    icon = getIconByTitle(title);
+                }
+                
+                if (isEditMode && selectedAppId) {
+                    // Edit aplikasi yang ada
+                    const app = findAppById(selectedAppId);
+                    if (app) {
+                        // Hapus dari kategori lama
+                        for (const cat in appsData) {
+                            const index = appsData[cat].findIndex(a => a.id === selectedAppId);
+                            if (index !== -1) {
+                                appsData[cat].splice(index, 1);
+                                break;
+                            }
+                        }
+                        
+                        // Tambah ke kategori baru
+                        appsData[category].push({
+                            id: selectedAppId,
+                            title,
+                            link,
+                            category,
+                            icon
+                        });
+                        
+                        alert('Aplikasi berhasil diperbarui!');
+                    }
+                } else {
+                    // Tambah aplikasi baru
+                    const newApp = {
+                        id: generateId(),
+                        title,
+                        link,
+                        category,
+                        icon
+                    };
+                    
+                    appsData[category].push(newApp);
+                    alert('Aplikasi berhasil ditambahkan!');
+                }
+                
+                // Simpan dan render ulang
+                saveData();
+                closeModal();
+                renderApps();
+            });
+            
+            // Render aplikasi untuk pertama kali
+            renderApps();
+        }
+    </script>
+</body>
+</html>
